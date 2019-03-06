@@ -1,8 +1,8 @@
 ## iMKT data repository
 Pipelines to extract unfolded site frequency spectrum from 1000GP VCF and DGN alignments.
-Each pipeline returns a tab-delimited file including information unfolded site frequency spectrum, analyzable sites by largest transcrip and divergence by genes, populations and MKT functional classes (0-fold: selected class; 4-fold: neutral class). Both allows the *Drosophila melanogaster* and humans proteins analysis through [iMKT web-service](https://imkt.uab.cat) and [iMKT R-package](https://github.com/BGD-UAB/iMKT). 
-This repository only include raw code to get main results. notebooks/ folder include two main Jupyter Notebooks running on Python 3.6 kernel to execute step by step the pipeline. src/ folder contain raw scripts to needed to execute the pipelin. Please note that multiple step could be parallelized, in this case create yourself customs bash scripts or run it on your server manually. 
-Pipeline were developed in the conda enviroment *imktData.yml* in local server: 100GB RAM and 16 Intel(R) Xeon(R) CPU.
+Each pipeline returns a tab-delimited file including information unfolded site frequency spectrum, analyzable sites by largest transcrip and divergence by genes, populations and MKT functional classes (0-fold: selected class; 4-fold: neutral class). Both allows the *Drosophila melanogaster* and humans proteins analysis through [iMKT web-service](https://imkt.uab.cat) and [iMKT R-package](https://github.com/BGD-UAB/iMKT).  
+This repository only include raw code to get main results. notebooks/ folder include two main Jupyter Notebooks running on Python 3.6 kernel to execute step by step the pipeline. src/ folder contain raw scripts to needed to execute the pipelin. Please note that multiple step could be parallelized, in this case create yourself customs bash scripts or run it on your server manually.   
+Pipeline were developed in the conda enviroment *imktData.yml* in local server: 100GB RAM and 16 Intel(R) Xeon(R) CPU.  
 In addition *structure.sh* deposited in scr/ create the folders we used to complete the whole process. If you decided execute it, ovewrite notebook/ and src/ with the same folders deposited at this repository.
 
 ## Data retrieve
