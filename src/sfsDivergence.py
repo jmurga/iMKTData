@@ -30,10 +30,10 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 
 	if(args.outgroup == 'dsim'):
-		outgroupFastas = args.path + '/fastas/outgroup/dsim'
+		outgroupFastas = '/data/shared/dgn/outgroup/dsim'
 		outputHeader = 'Dsimulans'
 	else:
-		outgroupFastas = args.path + '/fastas/outgroup/dyak'
+		outgroupFastas = '/data/shared/dgn/outgroup/dyak'
 		outputHeader = 'Dyakuba'
 
 
@@ -52,7 +52,7 @@ if __name__ == "__main__":
 		coordinates =  [coordinates[i:i+2] for i in range(0, len(coordinates), 2)]
 
 		# Open ref and outgroup
-		ref = Fasta(args.path + '/fastas/ref/Chr' + row['chr'] +'.fasta')
+		ref = Fasta('/data/shared/dgn/ref/Chr' + row['chr'] +'.fasta')
 		outgroup = Fasta(outgroupFastas + '/Chr' + row['chr'] +'_dsim.fasta')
 
 		## Extract ref and outgroup seq
@@ -65,7 +65,7 @@ if __name__ == "__main__":
 			if((len(refSeq)/3).is_integer()): 
 				
 				# Open population multifasta
-				popFasta = Fasta(args.path + '/fastas/alignments/' + args.population + '_Chr' + row['chr'] +'.seq')
+				popFasta = Fasta('/data/shared/dgn/alignments/' + args.population + '_Chr' + row['chr'] +'.seq')
 				
 				#Extract samples
 				samples = list(popFasta.keys())
