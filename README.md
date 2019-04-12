@@ -14,4 +14,4 @@ Genome variation data and information of the ancestral state of the variants gen
 
 ## Jupyter notebooks
 ### [01_*D. melanogaster* pipeline (python/bash)](https://nbviewer.jupyter.org/github/jmurga/iMKTData/blob/master/notebooks/dmelProteins.ipynb)
-### [02_Human pipeline (python/bash)](https://github.com/jmurga/iMKTData/blob/master/notebooks/humanProteins.ipynb)
+### [02_Human pipeline (python/bash)](https://nbviewer.jupyter.org/github/jmurga/iMKTData/blob/master/notebooks/humanProteins.ipynb)
