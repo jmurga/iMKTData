@@ -5,7 +5,8 @@ import numpy as np
 import pandas as pd
 from numpy import array 
 from pyfaidx import Fasta
-sys.path.insert(0, '/home/jmurga/mkt/201902/scripts/src')
+
+sys.path.insert(0, '/home/jmurga/mkt/201903/scripts/src')
 from reverseComplement import reverseComplement
 from degenerancy import degenerate
 # from dafResampling import dafWithResampling
@@ -41,7 +42,7 @@ if __name__ == "__main__":
 	cds = cds.loc[cds.reset_index().groupby(['chr','id'])['transcriptSize'].idxmax()].reset_index(drop=True)
 	# cds = cds.sort_values(['chr','startGene'])
 
-	for index,row in cds.head(1).iterrows():
+	for index,row in cds.iterrows():
 		print(index,row['id'])
 		start = time.time()
 
@@ -187,8 +188,5 @@ if __name__ == "__main__":
 				print("--- %s seconds ---" % (time.time() - start))
 				# Save results to df
 				dafDiv = pd.DataFrame(output)
-				dafDiv.to_csv(args.path + '/alleleFrequencies/' + args.population + 'dafDiv',sep='\t',header=False,mode='a',index=False)
+				dafDiv.to_csv(args.path + '/alleleFrequencies/' + args.population + 'DafDiv.tab' ,sep='\t',header=False,mode='a',index=False)
 				
-		
-
-		
