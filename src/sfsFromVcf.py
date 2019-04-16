@@ -18,7 +18,7 @@ if __name__ == "__main__":
 	parser.add_argument("--gpFiles", type = bool, required = False, default=False, help = "Analyze whole 1000GP by Phase1 populations or Phase3",choices=[True,False])
 	parser.add_argument("--seed", type = int, default = 1, help = "Input seed")
 	# Default arguments
-	parser.add_argument("--path", type = str, default = '/home/jmurga/positiveSelectionHuman/201901/rawData/humans', help = "Path to output file")
+	parser.add_argument("--path", type = str, default = '/home/jmurga/mkt/201903/rawData/humans', help = "Path to output file")
 	parser.add_argument("--sampling",type=int, default = None ,help = "None default value. Please introduce a number to resampling the original vcf file. Sampling value need to be minor than total individuals at raw vcf file.")
 	# Parsing common arguments
 	args = parser.parse_args()
@@ -32,7 +32,7 @@ if __name__ == "__main__":
 		args.populations = ['ACB','ASW','BEB','CDX','CHS','CLM','ESN','FIN','GBR','GIH','GWD','IBS','ITU','JPT','KHV','LWK','MSL','MXL','PEL','PJL','PUR','STU','TSI','CEU','CHB','YRI']
 	
 	dfGenes = pd.read_csv(args.path + '/annotations/'+args.data,header = 0,sep='\t')
-	dfGenes['start'] = dfGenes['start'] + 1
+	# dfGenes['start'] = dfGenes['start'] + 1
 
 	if(args.vcf == '1000GP' and args.sampling is None and args.gpFiles is False):
 		
@@ -45,7 +45,7 @@ if __name__ == "__main__":
 			print('\t' + pop)
 			start_time = time.time()
 			for index,row in dfGenes.iterrows():
-				# print(index)
+				print(index)
 				#Subseting VCF from first start to last end coordinate gene             
 				vcfFile = pysam.VariantFile(vcfPath+row['chr'] + str(pop) + '.vcf.gz').fetch(re.sub('chr','',row['chr']),row['start'],row['end'])
 				# vcfFile = pysam.VariantFile(vcfPath+row['chr'] + '_gp.vcf.gz').fetch(re.sub('chr','',row['chr']),row['startGene'],row['endGene'])
@@ -60,22 +60,22 @@ if __name__ == "__main__":
 							AA = variant.info['AA'][:-3].upper()
 
 						if(siteType == 'SNP' and AA != '.'):
-							if(variant.info['AC'][0] == 0):
-								next
-							else:
+							# if(variant.info['AC'][0] == 0):
+							# 	next
+							# else:
 								
-								REF = variant.ref
-								ALT = variant.alts[0]
-								AF  = variant.info['AC'][0]/variant.info['AN']
+							REF = variant.ref
+							ALT = variant.alts[0]
+							AF  = variant.info['AC'][0]/variant.info['AN']
 
-								# Set derived sequence and freq
-								if(ALT == AA):
-									dervideAllele = REF
-									DAF = 1 - AF
-								elif(REF == AA):
-									dervideAllele = ALT
-									DAF = AF    
-								rawVcf.append([variant.chrom,variant.pos,REF,ALT,AA,variant.info['AC'][0],variant.info['AN'],DAF,pop,row['id']])
+							# Set derived sequence and freq
+							if(ALT == AA):
+								dervideAllele = REF
+								DAF = 1 - AF
+							elif(REF == AA):
+								dervideAllele = ALT
+								DAF = AF    
+							rawVcf.append([variant.chrom,variant.pos,REF,ALT,AA,variant.info['AC'][0],variant.info['AN'],DAF,pop,row['id']])
 								# print([variant.chrom,variant.pos,REF,ALT,AA,variant.info['AC'][0],variant.info['AN'],DAF,pop])
 						else:
 							next
@@ -84,7 +84,7 @@ if __name__ == "__main__":
 				alleleFreq = pd.DataFrame(rawVcf)
 				# alleleFreq = pd.merge(pd.DataFrame(rawVcf),subsetCoordinates,on=['CHROM','POS'],how='inner')
 				if(len(args.populations) > 3):
-					alleleFreq.to_csv(args.path + '/alleleFrequencies/sfsFromVcf.tab',mode='a',index=False,header=False,sep='\t')
+					alleleFreq.to_csv(args.path + '/alleleFrequencies/'+pop+'SfsFromVcf.tab',mode='a',index=False,header=False,sep='\t')
 				else:
 					alleleFreq.to_csv(args.path + '/alleleFrequencies/sfsFromVcfPhase1.tab',mode='a',index=False,header=False,sep='\t')
 			print("--- %s seconds ---" % (time.time() - start_time))
