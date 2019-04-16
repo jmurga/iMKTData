@@ -42,8 +42,8 @@ if __name__ == "__main__":
 		print('Analyzing all pops:')
 		for pop in args.populations:
 			print('\t' + pop)
-			start_time = time.time()
 			for index,row in dfGenes.iterrows():
+				start_time = time.time()
 				print(index)
 				#Subseting VCF from first start to last end coordinate gene             
 				vcfFile = pysam.VariantFile(vcfPath+row['chr'] + str(pop) + '.vcf.gz').fetch(re.sub('chr','',row['chr']),row['start'],row['end'])
