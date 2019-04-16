@@ -86,7 +86,7 @@ if __name__ == "__main__":
 					alleleFreq.to_csv(args.path + '/alleleFrequencies/'+pop+'SfsFromVcf.tab',mode='a',index=False,header=False,sep='\t')
 				else:
 					alleleFreq.to_csv(args.path + '/alleleFrequencies/sfsFromVcfPhase1.tab',mode='a',index=False,header=False,sep='\t')
-			print("--- %s seconds ---" % (time.time() - start_time))
+				print("--- %s seconds ---" % (time.time() - start_time))
 	elif(args.vcf == '1000GP' and args.gpFiles is True):
 
 		print('+++++++++++++++++\nResampling VCF file\n+++++++++++++++++\n')
