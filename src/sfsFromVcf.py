@@ -32,7 +32,6 @@ if __name__ == "__main__":
 		args.populations = ['ACB','ASW','BEB','CDX','CHS','CLM','ESN','FIN','GBR','GIH','GWD','IBS','ITU','JPT','KHV','LWK','MSL','MXL','PEL','PJL','PUR','STU','TSI','CEU','CHB','YRI']
 	
 	dfGenes = pd.read_csv(args.path + '/annotations/'+args.data,header = 0,sep='\t')
-	# dfGenes['start'] = dfGenes['start'] + 1
 
 	if(args.vcf == '1000GP' and args.sampling is None and args.gpFiles is False):
 		
