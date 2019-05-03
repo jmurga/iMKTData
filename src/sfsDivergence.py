@@ -3,8 +3,7 @@ import os
 import sys
 import numpy as np
 import pandas as pd
-from numpy import array 
-from pyfaidx import Fasta
+import pyfaidx as px
 
 sys.path.insert(0, '/home/jmurga/mkt/201903/scripts/src')
 from reverseComplement import reverseComplement
@@ -42,17 +41,18 @@ if __name__ == "__main__":
 	cds = cds.loc[cds.reset_index().groupby(['chr','id'])['transcriptSize'].idxmax()].reset_index(drop=True)
 	# cds = cds.sort_values(['chr','startGene'])
 
-	for index,row in cds.iterrows():
+	# for index,row in cds.iterrows():
+	for index,row in cds[cds['name']=='dp'].iterrows():
 		print(index,row['id'])
 		start = time.time()
 
 		# Convert CDS list into numeric array
-		coordinates = array(row['coordinates'].split(',')).astype(int).tolist()
+		coordinates = np.array(row['coordinates'].split(',')).astype(int).tolist()
 		coordinates =  [coordinates[i:i+2] for i in range(0, len(coordinates), 2)]
 
 		# Open ref and outgroup
-		ref = Fasta('/data/shared/dgn/ref/Chr' + row['chr'] +'.fasta',sequence_always_upper=True)
-		outgroup = Fasta(outgroupFastas + '/Chr' + row['chr'] +'_dsim.fasta',sequence_always_upper=True)
+		ref = px.Fasta('/data/shared/dgn/ref/Chr' + row['chr'] +'.fasta',sequence_always_upper=True)
+		outgroup = px.Fasta(outgroupFastas + '/Chr' + row['chr'] +'_dsim.fasta',sequence_always_upper=True)
 
 		## Extract ref and outgroup seq
 		refSeq = ref.get_spliced_seq(list(ref.keys())[0], coordinates).seq
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 		if((len(refSeq) % 3) == 0): 
 
 			# Open multifasta
-			multiFasta = Fasta('/data/shared/dgn/alignments/'+ args.population + '_Chr' + row['chr'] +'.seq',sequence_always_upper=True)
+			multiFasta = px.Fasta('/data/shared/dgn/alignments/'+ args.population + '_Chr' + row['chr'] +'.seq',sequence_always_upper=True)
 
 			# Extract samples from fastas
 			samples = list(multiFasta.keys())
