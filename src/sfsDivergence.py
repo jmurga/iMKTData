@@ -41,8 +41,8 @@ if __name__ == "__main__":
 	cds = cds.loc[cds.reset_index().groupby(['chr','id'])['transcriptSize'].idxmax()].reset_index(drop=True)
 	# cds = cds.sort_values(['chr','startGene'])
 
-	# for index,row in cds.iterrows():
-	for index,row in cds[cds['name']=='dp'].iterrows():
+	for index,row in cds.iterrows():
+	# for index,row in cds.iloc[[1783,1784]].iterrows():
 		print(index,row['id'])
 		start = time.time()
 
@@ -84,13 +84,13 @@ if __name__ == "__main__":
 				# Iter by row matrix to input sequences
 				deleteIndex = []
 				for i in range(1,len(samples),1):
-					tmp = multiFasta.get_spliced_seq(samples[i], coordinates).seq
-					tmp = reverseComplement(tmp)
+					tmpFasta = multiFasta.get_spliced_seq(samples[i], coordinates).seq
+					tmpFasta = reverseComplement(tmpFasta)
 
-					if(tmp == ('N' * len(tmp))):
+					if(tmpFasta == ('N' * len(tmpFasta))):
 						deleteIndex.append(i)
 					else:
-						matrix[i] = list(tmp)
+						matrix[i] = list(tmpFasta)
 		
 				# Delete lines
 				matrix = np.delete(matrix,deleteIndex,0)
@@ -108,11 +108,11 @@ if __name__ == "__main__":
 				deleteIndex = []
 				# Iter by row matrix to input sequences
 				for i in range(1,len(samples),1):
-					tmp = multiFasta.get_spliced_seq(samples[i], coordinates).seq
-					if(tmp == ('N' * len(tmp))):
+					tmpFasta = multiFasta.get_spliced_seq(samples[i], coordinates).seq
+					if(tmpFasta == ('N' * len(tmpFasta))):
 						deleteIndex.append(i)
 					else:
-						matrix[i] = list(tmp)
+						matrix[i] = list(tmpFasta)
 		
 				# Delete lines
 				matrix = np.delete(matrix,deleteIndex,0)
@@ -122,7 +122,7 @@ if __name__ == "__main__":
 				matrix[matrix.shape[0]-1] = list(outgroupSeq)
 
 				# NEED TO SOLVE THIS. C-contigous change web subset, need true in order to inter properly witih nditer
-				matrix = np.asarray(matrix[:,(matrix[0]=='0') | (matrix[0]=='4')],order='C')
+				# matrix = np.asarray(matrix[:,(matrix[0]=='0') | (matrix[0]=='4')],order='C')
 
 			output = list()
 			# If not enough lines then save 0 values
@@ -142,8 +142,12 @@ if __name__ == "__main__":
 				iter = 0
 				# Iter each gene matrix to calculate daf and div by class resampling positions
 				for x in np.nditer(matrix, order='F',flags=['external_loop']):
+					
+					# Check if degen is correct. Necesary to save position (manual iter over same length list as matrix)
+					if((x[0]!='0') and (x[0]!='4')):
+						next
 					# If no enough positions then next position
-					if(x[x!='N'][1:-1].shape[0] < args.sampling):
+					elif(x[x!='N'][1:-1].shape[0] < args.sampling):
 						next
 					else:
 						degen = x[0]
@@ -165,7 +169,7 @@ if __name__ == "__main__":
 							# Check if pol != AA and monomorphic
 							if(np.unique(pol).shape[0] == 1 and np.unique(pol)[0] != AA):
 								div = 1; AF = 0
-								tmp = [row['id'],row['chr'],positions[i],div,AF,functionalClass,args.population]
+								tmp = [row['id'],row['chr'],positions[iter],div,AF,functionalClass,args.population]
 								output.append(tmp)
 							else:
 								AN = pol.shape[0]
@@ -181,12 +185,15 @@ if __name__ == "__main__":
 									elif(len(AC) != 0 and len(AC) < 2):
 										AF = AC.iloc[0]/AN
 										AF = AF.iloc[0]
-								tmp = [row['id'],row['chr'],positions[i],div,AF,functionalClass,args.population]
+
+								tmp = [row['id'],row['chr'],positions[iter],div,AF,functionalClass,args.population]
 								output.append(tmp)
-				iter+=1
+
+					iter+=1
 				
 				print("--- %s seconds ---" % (time.time() - start))
 				# Save results to df
 				dafDiv = pd.DataFrame(output)
-				dafDiv.to_csv(args.path + '/alleleFrequencies/' + args.population + 'DafDiv.tab' ,sep='\t',header=False,mode='a',index=False)
+				dafDiv.to_csv(args.path + '/alleleFrequencies/' + args.population + 'DafDivTested.tab' ,sep='\t',header=False,mode='a',index=False)
+				# dafDiv.to_csv(args.path + '/alleleFrequencies/' + args.population + 'DafDiv.tab' ,sep='\t',header=False,mode='a',index=False)
 				
