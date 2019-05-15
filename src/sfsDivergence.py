@@ -136,7 +136,9 @@ if __name__ == "__main__":
 
 				# Save in df
 				dafDiv = pd.DataFrame(output)
-				dafDiv.to_csv(args.path + '/alleleFrequencies/' + args.population + 'dafDiv',sep='\t',header=False,mode='a',index=False)
+				# dafDiv.to_csv(args.path + '/alleleFrequencies/' + args.population + 'dafDiv',sep='\t',header=False,mode='a',index=False)
+				dafDiv.to_csv(args.path + '/alleleFrequencies/' + args.population + 'DafDivNoSingletons.tab' ,sep='\t',header=False,mode='a',index=False)
+
 			else:
 				# Manual iterator to extract position
 				iter = 0
@@ -182,6 +184,8 @@ if __name__ == "__main__":
 									AC = AC[AC.index!=AA]
 									if(len(AC) == 0):
 										next
+									if(AC.iloc[0][0]==1):
+										next
 									elif(len(AC) != 0 and len(AC) < 2):
 										AF = AC.iloc[0]/AN
 										AF = AF.iloc[0]
@@ -194,6 +198,6 @@ if __name__ == "__main__":
 				print("--- %s seconds ---" % (time.time() - start))
 				# Save results to df
 				dafDiv = pd.DataFrame(output)
-				dafDiv.to_csv(args.path + '/alleleFrequencies/' + args.population + 'DafDivTested.tab' ,sep='\t',header=False,mode='a',index=False)
+				dafDiv.to_csv(args.path + '/alleleFrequencies/' + args.population + 'DafDivNoSingletons.tab' ,sep='\t',header=False,mode='a',index=False)
 				# dafDiv.to_csv(args.path + '/alleleFrequencies/' + args.population + 'DafDiv.tab' ,sep='\t',header=False,mode='a',index=False)
 				
