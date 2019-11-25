@@ -110,7 +110,6 @@ def uSfsFromFasta(sequenceMatrix):
 	
 	output = list()
 
-
 	for x in np.nditer(sequenceMatrix, order='F',flags=['external_loop']): 
 		degen = x[0]
 		AA = x[-1]
